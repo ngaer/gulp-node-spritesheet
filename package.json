@@ -1,0 +1,32 @@
+{
+	"name": "gulp-node-spritesheet",
+	"version": "0.0.1",
+	"main": "index.js",
+	"description": "Gulp plugin for node-spritesheet utility ",
+	"homepage": "https://github.com/ngaer/gulp-node-spritesheet",
+	"bugs": "https://github.com/ngaer/gulp-node-spritesheet/issues",
+	"author": {
+		"name": "Gaer Nikita",
+		"email": "gaer.nikita@gmail.com"
+	},
+	"keywords": [
+		"gulpplugin",
+		"node-spritesheet"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ngaer/gulp-node-spritesheet"
+	},
+	"licenses": [{
+		"type": "MIT"
+	}],
+	"dependencies": {
+		"gulp-util": "~2.2.10",
+		"through": "~2.3.4",
+		"node-spritesheet": "~0.4.2",
+		"q": "~1.0.0"
+	},
+	"devDependencies": {
+		"mocha": "*"
+	}
+}
