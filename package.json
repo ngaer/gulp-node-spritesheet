@@ -23,7 +23,7 @@
 	"dependencies": {
 		"gulp-util": "~2.2.10",
 		"through": "~2.3.4",
-		"node-spritesheet": "~0.4.2",
+		"node-spritesheet": "https://github.com/ngaer/node-spritesheet/tarball/master/",
 		"q": "~1.0.0"
 	},
 	"devDependencies": {
