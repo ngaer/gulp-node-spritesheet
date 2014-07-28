@@ -62,6 +62,11 @@ module.exports = function(options) {
 		var self = this,
 			outputFiles = [];
 
+		if (builderOptions.images.length == 0) {
+			self.emit('end');
+			return;
+		}
+
 		builder = new sprites.Builder(builderOptions);
 
 		// add output configurations
