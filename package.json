@@ -30,7 +30,7 @@
 		"q": "~1.0.0"
 	},
 	"devDependencies": {
-		"mocha": "^1.16.2",
-		"jshint": "^2.4.1"
+		"mocha": "~1.16.2",
+		"jshint": "~2.4.1"
 	}
 }
