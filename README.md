@@ -1,4 +1,4 @@
-# gulp-node-spritesheet [![Build Status](https://travis-ci.org/ngaer/gulp-node-spritesheet.png?branch=master)](https://travis-ci.org/ngaer/gulp-node-spritesheet) [![NPM version](https://badge.fury.io/js/gulp-node-spritesheet.svg)](http://badge.fury.io/js/gulp-node-spritesheet)
+# gulp-node-spritesheet [![Build Status](https://travis-ci.org/ngaer/gulp-node-spritesheet.svg?branch=master)](https://travis-ci.org/ngaer/gulp-node-spritesheet) [![NPM version](https://badge.fury.io/js/gulp-node-spritesheet.svg)](http://badge.fury.io/js/gulp-node-spritesheet)
 
 Gulp plugin for [node-spritesheet utility](https://github.com/richardbutler/node-spritesheet)
 
