@@ -13,6 +13,9 @@
 		"gulpplugin",
 		"node-spritesheet"
 	],
+	"scripts": {
+		"test": "jshint index.js && mocha"
+	},
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/ngaer/gulp-node-spritesheet"
@@ -27,6 +30,7 @@
 		"q": "~1.0.0"
 	},
 	"devDependencies": {
-		"mocha": "*"
+		"mocha": "^1.16.2",
+		"jshint": "^2.4.1"
 	}
 }

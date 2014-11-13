@@ -11,6 +11,7 @@
 var gutil = require('gulp-util'),
 	through = require('through'),
 	sprites = require('node-spritesheet'),
+	path = require('path'),
 	fs = require('fs'),
 	Q = require('q');
 
@@ -19,19 +20,11 @@ module.exports = function(options) {
 		builderOptions = {
 			images: []
 		},
-		outputOptions = options.output;
+		outputOptions = options.output,
+		cwd = process.cwd(),
+		timestamp = new Date().getTime();
 
-	// get output directory
-	if (options.outputCss) {
-		var outputMatch = options.outputCss.match(/^(.*?)\/?([^/]*)\.([^/]*)$/);
-
-		if (outputMatch.length > 1) {
-			options.outputCss = outputMatch[2] + '.' + outputMatch[3];
-			options.outputDirectory = outputMatch[1];
-		}
-	}
-
-	// create config of allowed options
+	// Create a config of allowed options
 	[
 		'selector',
 		'outputCss',
@@ -42,64 +35,102 @@ module.exports = function(options) {
 		'httpImagePath',
 		'filter'
 	].forEach(function(option) {
-			if (option == 'outputImage' && outputOptions) {
-				return;
-			}
-			if (options[option]) {
-				builderOptions[option] = options[option];
-			}
-		})
+		if (option === 'outputImage' && outputOptions) {
+			return;
+		}
+
+		if (options[option]) {
+			builderOptions[option] = options[option];
+		}
+	});
+
+	// Add timestamp to name of output file for prevent of overwriting existing files with the same name
+	function replaceOutput(output) {
+		output.outputImage = output.outputImage.replace(/([^.])\.([^.])/g, '$1_' + timestamp + '.$2');
+	}
+
+	if (builderOptions.outputImage) {
+		replaceOutput(builderOptions);
+	}
 
 	function bufferFiles(file) {
-		if (file.isNull()) return;
-		file.isStream() && this.emit('error', new PluginError('gulp-node-spritesheet', 'Streams are not supported!'));
+		if (file.isNull()) {
+			return;
+		}
 
-		// collect image paths
+		if (file.isStream()) {
+			this.emit('error', new gutil.PluginError('gulp-node-spritesheet', 'Streams are not supported!'));
+			return;
+		}
+
+		// Getting of outputDirectory from path of the first file in the stream
+		if (!builderOptions.outputDirectory) {
+			var outputMatch = file.path.match(/^(.*?)\/?([^/]*)\.([^/]*)$/);
+
+			builderOptions.outputDirectory = outputMatch[1];
+
+			// Specify css path relative to the gulp config directory
+			if (builderOptions.outputCss) {
+				builderOptions.outputCss = path.relative(builderOptions.outputDirectory, cwd) + '/' + builderOptions.outputCss;
+			}
+		}
+
+		// Collect image paths
 		builderOptions.images.push(file.path);
-	};
+	}
 
 	function endStream() {
 		var self = this,
 			outputFiles = [];
 
+		// Skip compile in case of empty image list
+		if (!builderOptions.images.length) {
+			self.emit('end');
+			return;
+		}
+
 		builder = new sprites.Builder(builderOptions);
 
-		// add output configurations
+		// Add output configurations
 		if (outputOptions) {
-			for (var key in outputOptions) {
-				if (outputOptions.hasOwnProperty(key)) {
-					var outputOptionsItem = outputOptions[key];
-					builder.addConfiguration(key, outputOptionsItem);
-					outputFiles.push(outputOptionsItem.outputImage);
-				}
-			}
+			Object.keys(outputOptions).forEach(function(key) {
+				var outputOptionsItem = outputOptions[key];
+
+				replaceOutput(outputOptionsItem);
+				builder.addConfiguration(key, outputOptionsItem);
+				outputFiles.push(outputOptionsItem.outputImage);
+			});
 		} else {
-			outputFiles.push(options.outputImage);
+			outputFiles.push(builderOptions.outputImage);
 		}
 
 		builder.build(function() {
 			var queue = [];
 			/*
-			 Plugin node-spritesheet doesn't support streaming of compiled files, it can just save it in fs by
-			 configuration. So to make it more 'gulp way', we read this compiled files and push it to a stream, and
-			 remove files form fs after.
-			 */
+				Plugin node-spritesheet doesn't support streaming of compiled files, it can just save it in fs by
+				configuration. So to make it more 'gulp way', we read this compiled files and push it to a stream, and
+				remove files form fs after.
+			*/
 			outputFiles.forEach(function(file) {
-				var filePath = options.outputDirectory + '/' + file,
+				var filePath = builderOptions.outputDirectory + '/' + file,
 					deferred = Q.defer();
 
-				fs.readFile(filePath, function(err, data) {
-					if (err) {
-						self.emit('error', new PluginError('gulp-node-spritesheet', err));
+				fs.readFile(filePath, function(error, data) {
+					if (error) {
+						self.emit('error', new gutil.PluginError('gulp-node-spritesheet', error));
 					}
+
 					if (data) {
-						fs.unlink(filePath, function (err) {
-							if (err) throw err;
+						fs.unlink(filePath, function (error) {
+							if (error) {
+								throw error;
+							}
 						});
+
 						self.emit('data', new gutil.File({
-							cwd: options.outputDirectory,
-							base: options.outputDirectory,
-							path: filePath,
+							cwd: cwd,
+							base: cwd,
+							path: cwd + '/' + file.replace('_' + timestamp, ''),
 							contents: data
 						}));
 					}
@@ -113,7 +144,7 @@ module.exports = function(options) {
 				self.emit('end');
 			});
 		});
-	};
+	}
 
 	return through(bufferFiles, endStream);
 };
