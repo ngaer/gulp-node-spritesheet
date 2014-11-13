@@ -1,6 +1,6 @@
 {
 	"name": "gulp-node-spritesheet",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"main": "index.js",
 	"description": "Gulp plugin for node-spritesheet utility ",
 	"homepage": "https://github.com/ngaer/gulp-node-spritesheet",

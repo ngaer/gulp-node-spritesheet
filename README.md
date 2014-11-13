@@ -1,4 +1,4 @@
-# gulp-node-spritesheet [![Build Status](https://travis-ci.org/ngaer/gulp-node-spritesheet.png?branch=master)](https://travis-ci.org/ngaer/gulp-node-spritesheet)
+# gulp-node-spritesheet [![Build Status](https://travis-ci.org/ngaer/gulp-node-spritesheet.png?branch=master)](https://travis-ci.org/ngaer/gulp-node-spritesheet) [![NPM version](https://badge.fury.io/js/gulp-node-spritesheet.svg)](http://badge.fury.io/js/gulp-node-spritesheet)
 
 Gulp plugin for [node-spritesheet utility](https://github.com/richardbutler/node-spritesheet)
 
@@ -70,7 +70,8 @@ Takes in a series of images a generates a sprite styles in `sprite/style.css` an
 As the retina scheme has the highest pixel ratio, it will be assumed that all images passed to the plugin are for 'retina'. So, at the output, will be two images `sprite@2x.png` for 'retina' and downscaled `sprite.png` for 'legacy'.
 
 ## Release History
-_(Nothing yet)_
+
+ * 2014-11-14   v0.1.0   First release.
 
 ## License
 Copyright (c) 2014 Gaer Nikita. Licensed under the MIT license.
