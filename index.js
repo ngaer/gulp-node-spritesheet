@@ -65,6 +65,9 @@ module.exports = function(options) {
 
 		// Getting of outputDirectory from path of the first file in the stream
 		if (!builderOptions.outputDirectory) {
+			//Replace windows slashes with unix slashes
+			file.path = file.path.replace(/\\/g, '/');
+
 			var outputMatch = file.path.match(/^(.*?)\/?([^/]*)\.([^/]*)$/);
 
 			builderOptions.outputDirectory = outputMatch[1];
