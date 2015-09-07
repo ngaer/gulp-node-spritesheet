@@ -65,9 +65,7 @@ module.exports = function(options) {
 
 		// Getting of outputDirectory from path of the first file in the stream
 		if (!builderOptions.outputDirectory) {
-			var outputMatch = file.path.match(/^(.*?)\/?([^/]*)\.([^/]*)$/);
-
-			builderOptions.outputDirectory = outputMatch[1];
+			builderOptions.outputDirectory = path.dirname(file.path);
 
 			// Specify css path relative to the gulp config directory
 			if (builderOptions.outputCss) {
