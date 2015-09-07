@@ -71,6 +71,7 @@ As the retina scheme has the highest pixel ratio, it will be assumed that all im
 
 ## Release History
 
+ * 2015-09-07   v0.1.1   Minor fixes.
  * 2014-11-14   v0.1.0   First release.
 
 ## License
